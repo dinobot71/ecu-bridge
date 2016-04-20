@@ -53,6 +53,8 @@ A couple of add-ons are used to make life easier when working with the RPI2; nei
 
 The high level view of the software running on the RPI2:
 
+![alt tag](https://raw.githubusercontent.com/dinobot71/ecu-bridge/master/readme/over2.jpg)
+
 From above you can see that we have 3 (three) software daemons:
 
 1. ecubridge – this is the main controller.  In addition to passing data from DL-32 to the Solo DL, it will listen for user commands on a TCP port (which may come from the command line or the Web GUI), and will also listen to the USB Bus so it can react intelligently if the USB cable isn’t plugged in yet, or if the USB cable is re-connected.
@@ -66,10 +68,14 @@ These are all started automatically when the RPI2 is powered on.  They each have
 
 To allow the ECU Bridge to be easily extended, flexibly adapt to different kinds of inputs or work with an output other than the Solo DL, or potentially act as a software defined ECU, we’ve introduced the idea of a virtual channel:
 
+![alt tag](https://raw.githubusercontent.com/dinobot71/ecu-bridge/master/readme/over3.jpg)
+
 There is a virtual channel for each data channel the output device supports.  In our project it’s the Solo DL, so there are 15 channels, ranging in kind from RPM, to water temperature to error flag.   Other devices could potentially have different kinds of channels.
 
 Virtual channels also give us a lot of flexibility, by defining in software what transformations happen on the input to the channel and the output of the channel, we can easily adapt to connecting different kinds of devices, or having different ways of scaling / interpreting the inputs and outputs.    For example if the DL-32 was replaced with some other means of monitoring the Honda ECU in an analog way…we might have to change how we scale the input values to get the “normal” values we expect from the gauges on the car dashboard.  
 
 Also, at run time we may decide that we need to change which inputs go to which outputs…but we may not want to have to physically rewire the input setup.  To allow for this kind of hot wiring, we support the idea of source/destination patching.  In the middle of the virtual channel, we allow the normal data to be redirected from one virtual channel to another before it goes to the output side (filtering and transformation), and on to the Solo DL.  
+
+![alt tag](https://raw.githubusercontent.com/dinobot71/ecu-bridge/master/readme/over4.jpg)
 
 Simply by “patching” channels we can hot wire where input data goes.  No need to get out the ‘ol tool box 
