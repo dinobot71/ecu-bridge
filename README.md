@@ -45,3 +45,28 @@ A couple of add-ons are used to make life easier when working with the RPI2; nei
 2. WI-PI Wi-Fi Adaptor – allows for wireless access to the RPI2.  This in turn allows you to work with the RPI2 using a smart phone or tablet.  If you are at the track you may not allays have a laptop handy!
 
 3. FT4232H Quad RS-232 / USB cable.  This cable allows us to not only connect to multiple RS-232 ports while using a single USB port, but also handles voltage conversion/regulating between RS-232 levels and TTL (5V DC) used by the Raspberry PI.  Very handy!
+
+## ECU Bridge Software
+
+The high level view of the software running on the RPI2:
+
+From above you can see that we have 3 (three) software daemons:
+
+1. ecubridge – this is the main controller.  In addition to passing data from DL-32 to the Solo DL, it will listen for user commands on a TCP port (which may come from the command line or the Web GUI), and will also listen to the USB Bus so it can react intelligently if the USB cable isn’t plugged in yet, or if the USB cable is re-connected.
+
+2. ecudatalogger – listens to the ecubridge (via multi-cast UDP) to capture the raw, normal and output data of the ecubridge as its transcoded (live) without interrupting or slowing down the ECU Bridge.  Once we have the data, we pass on to RRD for actual storage and to later generate graphs etc.  Note though we are currently configured to only capture the most recent 24 hours worth of data, so after a race, be sure to power off the RPI2 so that it doesn’t keep recording and wipe out the race data.
+
+3. RRD Tool – this is the standard Open Source tool for data logging.  Even though it doesn’t support millisecond level time resolution (it only goes down to 1second), we just average our recorded data (at 10hz) to 1hz and log that.  The purpose of the on board data logging is for analyzing and debugging the transcoding of data not the actual performance of the race car, so a resolution of 1sec is acceptable.  Other onboard data loggers were considered, but basically RRD is the best in breed and easiest / fastest to get up and running with.
+These are all started automatically when the RPI2 is powered on.  They each have their own configuration and logging (see the System Setup chapter).  You can fully configure them as needed, and debug them using their log files.   
+
+## Transcoding
+
+To allow the ECU Bridge to be easily extended, flexibly adapt to different kinds of inputs or work with an output other than the Solo DL, or potentially act as a software defined ECU, we’ve introduced the idea of a virtual channel:
+
+There is a virtual channel for each data channel the output device supports.  In our project it’s the Solo DL, so there are 15 channels, ranging in kind from RPM, to water temperature to error flag.   Other devices could potentially have different kinds of channels.
+
+Virtual channels also give us a lot of flexibility, by defining in software what transformations happen on the input to the channel and the output of the channel, we can easily adapt to connecting different kinds of devices, or having different ways of scaling / interpreting the inputs and outputs.    For example if the DL-32 was replaced with some other means of monitoring the Honda ECU in an analog way…we might have to change how we scale the input values to get the “normal” values we expect from the gauges on the car dashboard.  
+
+Also, at run time we may decide that we need to change which inputs go to which outputs…but we may not want to have to physically rewire the input setup.  To allow for this kind of hot wiring, we support the idea of source/destination patching.  In the middle of the virtual channel, we allow the normal data to be redirected from one virtual channel to another before it goes to the output side (filtering and transformation), and on to the Solo DL.  
+
+Simply by “patching” channels we can hot wire where input data goes.  No need to get out the ‘ol tool box 
