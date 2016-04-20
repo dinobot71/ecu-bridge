@@ -1,5 +1,9 @@
 # ECU Bridge (Chump Car Framework)
+
+`Please review the [User Guide (Word)](https://raw.githubusercontent.com/dinobot71/ecu-bridge/master/docs/User-Guide.docx) for more complete details, background and setup.`
+
 ## Introduction
+
 The ECU (Engine Control Unit) Bridge is a flexible means of bringing sensor data from legacy or non-standard equipment to modern data loggers and analysis tools.  A Raspberry PI is used as a flexible and affordable way to physically wire the old equipment with the new.  Software onboard the Raspberry PI (the ECU Bridge software) handles the details of mapping the legacy equipment inputs to the modern equipment outputs. Together the Raspberry PI and the ECU Bridge software are what we mean by “ECU Bridge”.
 
 The ECU Bridge can even serve as a software defined ECU – potentially you can simulate data that would come from another engine, or you can bring together sensors to define your own ECU without actually having an ECU.  The end result is that you can flexibly do data logging and analysis for equipment that normally would not be compatible at all with modern data loggers and analysis software.
