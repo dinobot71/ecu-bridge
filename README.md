@@ -1,6 +1,6 @@
 # ECU Bridge (Chump Car Framework)
 
-`Please review the [User Guide (Word)](https://raw.githubusercontent.com/dinobot71/ecu-bridge/master/docs/User-Guide.docx) for more complete details, background and setup.`
+> Please review the [User Guide (Word)](https://raw.githubusercontent.com/dinobot71/ecu-bridge/master/docs/User-Guide.docx) for more complete details, background and setup.
 
 ## Introduction
 
