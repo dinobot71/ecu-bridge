@@ -1,0 +1,1 @@
+This folder is for images needed by the README.md file
