@@ -1,0 +1,59 @@
+<?php
+
+/** 
+ *
+ * html-leader.html - this is the first include in every file.  Here we do any 
+ * critical page setup, session management etc.  
+ *
+ * General Notes:
+ * 
+ * We use HTML 5 semantic elemnts for page layout:
+ * 
+ *   http://www.w3schools.com/html/html5_semantic_elements.asp
+ *
+ * Further we use Bootstrap to responde to different screens/devices gracefully, 
+ * as well as provide a standardized layout and look and feel.
+ *
+ *   http://getbootstrap.com/getting-started/
+ * 
+ * For jQuery we are going with 1.10.  This is a little old now, but has the most
+ * broad support for existing widgets/plugins.  If its really needed we'll jump 
+ * to the latest version (2.x).
+ *
+ *   https://jquery.com/download/
+ *
+ * For time/date features we rely on Moment:
+ *
+ *   http://momentjs.com/
+ *
+ * All of our graphing is done by Highcharts, because...Highcharts! 
+ *
+ *   http://www.highcharts.com/
+ *
+ * We don't use Node.js, Bower etc.  This web site is just a flat set of HTML/PHP 
+ * files. The structure should be fairly obvious:
+ *
+ * <main>
+ *
+ *   css     - style files (including from Bootstrap)
+ *   fonts   - any required custom fonts
+ *   images  - images
+ *   js      - all javascript (including from Bootstrap)
+ *   parts   - pieces of our template (things like this file you are reading)
+ *   library - the code for the website
+ *   rest    - the REST API endpoint
+ *
+ * Other folders are related materials but not generally essential to the website 
+ * (the GUI).
+ *
+ */
+
+
+/**
+ * 
+ * kick off the page make sure there is no unexpected whitespace at the top.
+ *
+ */
+
+?><!DOCTYPE html>
+<html lang="en">

@@ -1,0 +1,137 @@
+First time Ubuntu Setup on Raspbery Pi 2 (Model B)
+
+1 - First Boot
+==============
+
+Installation of pre-loaded file system, follow directions for settting up an SD card and loading it 
+to the Raspberry PI:
+
+  https://www.raspberrypi.org/documentation/installation/sdxc_formatting.md
+  
+When we get to writing an image though; go get the Ubuntu Mate image:
+
+  https://ubuntu-mate.org/raspberry-pi/
+ 
+We don't want Snappy, becuase its a dumbed down version that forces you to do iOS style remote development.
+
+Once the SD Card is ready, hook up an ethernet patch cable, keyboard/mouse and HDML cable to your display. You can't do headless install with Ubuntu Mate.   
+
+Power up the Raspberry and the built in operating system installer will walk you through the complete install.
+
+2 - Bsaic Setup
+===============
+
+With Linux installed and a lot of niceties, we don't need to do a lot except add some users.  I've added 'chumpcar'  for myself 'mgarvin'. Both have sudo access, so you can just login to the RPI2 via ssh and then "sudo su" to easily do any root stuff you need to do.
+
+To make boot time faster and lower the load on the RPI2, I've disabled the graphical desktop:
+
+  graphical disable
+
+You can easily login and use the RPI2 via ssh ether over LAN or WIFI (if you have a WIFI adaptor plugged in).  To get the IP address to use, check your router or use a networkscanner to find it.  The RPI2 shows up very easily, its manufacturer string will be Raspberry Foundation.
+
+3 - VNC
+=======
+
+To make it easy to debug code or get to the RPI2 with VNC instead of ssh, I've setup VNC Server (as a service).  It will start on every boot.  Its much lighter weight than the graphical desktop and you can connect with your favorite VNC client.  The server is tightvnc, so the tightvnc client is likely the best one to use.  Details on setting up VNC Server are here:
+
+  https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-14-04
+
+The VNC server is configured to run as the user "chumpcar" (so not as root).  
+
+4 - USB Setup
+=============
+
+The FTDI quad cable (RS232/USB) is automatically supported by existing kernel drivers (i.e. usbserial), so just plugin it into one of the RPI2 USB ports, wait a couple of seconds and then run 'dmesg'.  You should see something like:
+
+...
+[    4.633044] usbcore: registered new interface driver usbserial
+[    4.637604] usbcore: registered new interface driver usbserial_generic
+[    4.637856] usbserial: USB Serial support registered for generic
+[    4.655288] usbcore: registered new interface driver ftdi_sio
+[    4.655453] usbserial: USB Serial support registered for FTDI USB Serial Device
+[    4.655829] ftdi_sio 1-1.3:1.0: FTDI USB Serial Device converter detected
+[    4.656088] usb 1-1.3: Detected FT4232H
+[    4.657754] usb 1-1.3: FTDI USB Serial Device converter now attached to ttyUSB0
+[    4.657936] ftdi_sio 1-1.3:1.1: FTDI USB Serial Device converter detected
+[    4.658175] usb 1-1.3: Detected FT4232H
+[    4.667435] usb 1-1.3: FTDI USB Serial Device converter now attached to ttyUSB1
+[    4.667674] ftdi_sio 1-1.3:1.2: FTDI USB Serial Device converter detected
+[    4.667992] usb 1-1.3: Detected FT4232H
+[    4.681054] usb 1-1.3: FTDI USB Serial Device converter now attached to ttyUSB2
+[    4.681273] ftdi_sio 1-1.3:1.3: FTDI USB Serial Device converter detected
+[    4.681525] usb 1-1.3: Detected FT4232H
+[    4.685944] usb 1-1.3: FTDI USB Serial Device converter now attached to ttyUSB3
+...
+
+Notice that they are already connected to terminals, for example: 
+
+  ttyUSB0
+  
+So no further low level configuration is needed.  You can find a detailed walk through  over here though:
+
+  https://blog.mypapit.net/2008/05/how-to-use-usb-serial-port-converter-in-ubuntu.html
+
+if you need it.
+
+You can also confirm its setup automatically with "lsusb":
+
+Bus 001 Device 004: ID 0403:6011 Future Technology Devices International, Ltd FT4232H Quad HS USB-UART/FIFO IC
+Bus 001 Device 003: ID 0424:ec00 Standard Microsystems Corp. SMSC9512/9514 Fast Ethernet Adapter
+Bus 001 Device 002: ID 0424:9514 Standard Microsystems Corp. SMC9514 Hub
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+root@chumpcar:/home/chumpcar# 
+
+The FTDI "FT4232H" is the quad cable.  If you look closely at the cabels they are numbered 1-4.  Presumably these map to 0-3 for the USB terminals. I've colored the DL-32 input cable red and the Solo/DL output cable white. These should be USB0 and USB1 respetively.
+
+5 - Eclipse (IDE) Setup
+=======================
+
+For easy remote development, working on your desktop:
+
+- Can use existing eclipse, just make sure you have CDT perspective 
+  installed
+  
+- Can use RSE (Remote System Explorer) as usual, there is a nice 
+  tutorial on setting upRS here:
+  
+    http://www.patrickjwaters.com/blog/2011-07-24/how-setup-eclipse-php-pdt-remote-system-explorer-theme-manager-and-drupal-plugins/35
+	
+  You can ignore the PHP stuff if you like.
+  
+- To create a project on the Raspberry, just add a new connection (open 
+  the Remote Systems view), and use the IP address for the RPI2.  Uncheck
+  the "Verify Hostname" option.
+  
+- I've already updated the Raspberry security settings (sshd_config) to 
+  handle incoming SSH connections from Eclipse:
+  
+  Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com,chacha20-poly1305@openssh.com,blowfish-cbc,aes128-cbc,3des-cbc,cast128-cbc,arcfour,aes192-cbc,aes256-cbc
+
+  KexAlgorithms=curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
+
+- So you should have any issue at all working remotely with the Raspberry, nice and comfy 
+  in Eclipse.
+  
+- If you want to use other IDEs I'm sure it will work fine, most stuff these days can 
+  support at least SSH connections.  We can add other types if really necessary.  
+  
+  
+  
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+  
+  
+  

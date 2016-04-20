@@ -1,0 +1,60 @@
+
+@-moz-keyframes animate-stripes {
+100% {
+    background-position: 0 0;
+}
+0% {
+    background-position: 36px 0;
+}
+}
+.ui-progress-bar {
+    background: linear-gradient(#949DAA 0%, #ABB2BC 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border-radius: 0;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5) inset, 0 1px 0 0 #FFFFFF;
+    height: 25px;
+    padding-right: 2px;
+    position: relative;
+}
+.ui-progress-bar.blue .ui-progress {
+    background-color: #339BB9 !important;
+    border: 1px solid #287A91;
+}
+.ui-progress-bar.error .ui-progress {
+    background-color: #C43C35 !important;
+    border: 1px solid #9C302A;
+}
+.ui-progress-bar.warning .ui-progress {
+    background-color: #D9B31A !important;
+    border: 1px solid #AB8D15;
+}
+.ui-progress-bar.success .ui-progress {
+    background-color: #57A957 !important;
+    border: 1px solid #458845;
+}
+.ui-progress-bar.transition .ui-progress {
+    transition: background-color 0.5s ease-in 0s, border-color 1.5s ease-out 0s, box-shadow 1.5s ease-out 0s;
+}
+.ui-progress-bar .ui-progress {
+    animation: 2s linear 0s normal none infinite animate-stripes;
+    background: -moz-repeating-linear-gradient(left top -30deg, rgba(255, 255, 255, 0.17), rgba(255, 255, 255, 0.17) 15px, rgba(255, 255, 255, 0) 15px, rgba(255, 255, 255, 0) 30px) repeat scroll 0 0%, linear-gradient(rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 100%) repeat scroll 0 0%, none repeat scroll 0 0 #74D04C;
+    border: 1px solid #4C8932;
+    border-radius: 0;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.4) inset, 0 -1px 1px rgba(0, 0, 0, 0.2) inset;
+    display: block;
+    height: 23px;
+    overflow: hidden;
+    position: relative;
+}
+.ui-progress-bar .ui-progress span.ui-label {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 80%;
+    line-height: 23px;
+    padding-right: 12px;
+    position: absolute;
+    right: 0;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+    white-space: nowrap;
+}
+.ui-progress-bar .ui-progress span.ui-label b {
+    font-weight: bold;
+}

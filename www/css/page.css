@@ -1,0 +1,73 @@
+
+/*
+ * general layout
+ *
+ */
+ 
+ 
+ 
+header {
+	background-color: #485CD6;
+}
+
+main {
+	#background-color: #36454F;
+	background-color: #535353;
+	color: #ffffff;
+}
+
+footer {
+	background-color: #000000;
+  color: #ffffff;
+}
+
+.statustable {
+  padding: 0px;
+  margin: 0px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  margin-left: 12px;
+}
+
+.statustable td.leftcol {
+	text-align: right;
+	padding: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  font-weight: bold;
+}
+
+.channeltable td {
+	margin: 0px;
+	padding: 4px;
+}
+
+.channeltable h3 {
+	margin: 0px;
+	padding: 0px;
+}
+
+.channeltable input.form-control{
+	width: 80px;
+}
+
+.channeltable .filterbtn {
+	width: 110px;
+}
+
+.dialblock {
+  display: block;
+  float: left;
+  width: 200px;
+  margin: 12px;
+  padding: 0px;
+}
+
+.diallabel {
+	display: block;
+	float: left;
+	text-align: center;
+	width: 200px;
+	margin: 0px;
+	padding: 0px;
+}

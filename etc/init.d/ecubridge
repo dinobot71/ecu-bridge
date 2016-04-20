@@ -1,0 +1,66 @@
+#!/bin/bash
+PATH="$PATH:/usr/local/bin:/usr/bin/"
+ECU=/usr/local/bin/ecubridge
+USER=`whoami`
+
+if [ "$USER" != "root" ] ; then
+  echo "Must run as 'root' user."
+  exit 1
+fi
+
+case "$1" in
+
+
+start)
+echo "Starting ECU Bridge..."
+$ECU
+sleep 1
+PID=`cat /var/run/ecubridge.pid`
+/bin/ps -p $PID 2>&1 > /dev/null
+STATUS=$?
+if [ $STATUS -eq 0 ] ; then
+  echo "Started."
+  exit 0
+else 
+  echo "Could not start, check log."
+  exit 1
+fi
+
+;;
+
+
+stop)
+PID=`cat /var/run/ecubridge.pid`
+/bin/kill -15 $PID
+sleep 1
+/bin/ps -p $PID 2>&1 > /dev/null
+STATUS=$?
+if [ $STATUS -eq 1 ] ; then
+  echo "Stopped"
+  exit 0
+else 
+  echo "Could not stop, check log."
+  exit 1
+fi
+;;
+
+
+status)
+PID=`cat /var/run/ecubridge.pid`
+/bin/ps -p $PID 2>&1 > /dev/null
+STATUS=$?
+if [ $STATUS -eq 1 ] ; then
+  echo "Stopped."
+else
+  echo "status" | /bin/netcat localhost 5999 
+fi
+;;
+
+
+restart)
+$0 stop
+$0 start
+;;
+esac
+
+exit 0

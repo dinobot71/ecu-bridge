@@ -1,0 +1,14 @@
+<!--
+       this is a Microsoft specific behaviour that we have to use
+       to make up for the lack of :hover in its CSS support.  Only
+       Microsoft IE understands conditional comments so it will be
+       the only browser to pull this in.
+-->
+
+<!--[if IE]>
+<style type="text/css" media="screen">
+  body {
+    behavior: url(<?=TMPLT_CSS?>/hover.htc);
+  }
+</style>
+<![endif]-->
